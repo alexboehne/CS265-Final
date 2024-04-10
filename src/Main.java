@@ -10,8 +10,9 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws NoSuchAlgorithmException, IOException {
         Scanner input = new Scanner(System.in); // Scanner obj
-        String compedPass = "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824";
-        int palindromes = 0;
+
+        String compedPass = "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"; // hello in SHA256
+        int palindromes = 0; // Pallindrome counter
 
         comparePassword(compedPass, input); // Doesn't advance program until correct password
 
@@ -25,6 +26,7 @@ public class Main {
         ArrayList<Character> charArray = new ArrayList<>();
         ArrayList<String> palindromeArray = new ArrayList<>();
 
+        // Iterates through all words in stored list
         for (String word : stList) {
             if (word.length() == 1) { // Exclude len 1 words
                 continue;
@@ -40,10 +42,11 @@ public class Main {
         }
 
         long end = System.currentTimeMillis();
-        long time = end - start;
+        long time = end - start; // Calc run time
 
-        System.out.println(palindromes + " palindromes found in " + time + " ms");
+        System.out.println(palindromes + " palindromes found in " + time + " ms"); // Print output
 
+        // List all pallindromes found
         System.out.println("Would you like to list the palindromes found? (y/N)");
         String response = input.next();
         if (response.equals("y")) {
@@ -54,9 +57,14 @@ public class Main {
         }
     }
 
+    // Function to determine if word is pallindrome
     public static boolean calcPalindrome(ArrayList<Character> t) {
         for (int i = 0; i <= Math.ceil(t.size() / 2); i++) {
-            if (t.get(i) != t.get(t.size() - i - 1)) {
+            // Converts characters to lowercase
+            Character c = Character.toLowerCase(t.get(i));
+            Character c2 = Character.toLowerCase(t.get(t.size() - 1 - i));
+
+            if (!c.equals(c2)) { // Checks for 2 letters at opposite ends
                 return false;
             }
         }
@@ -72,19 +80,16 @@ public class Main {
     //  Turns hex array into 256-byte len string
     public static String toHex(byte[] hash) {
         BigInteger num = new BigInteger(1, hash); // Generate BigInteger
-
         StringBuilder hexString = new StringBuilder(num.toString(16)); // Create StringBuilder in hex
 
         while (hexString.length() < 64) { // Pad string with 0s if 'len < 64'
             hexString.insert(0, '0');
         }
-
         return hexString.toString(); // Returns hashed string
     }
     //  Complete method for hashing string with SHA256
     public static String toHash(String h) throws NoSuchAlgorithmException {
-        String hashString = toHex(getSHA(h));
-        return hashString;
+        return toHex(getSHA(h));
     }
 
     public static boolean comparePassword(String rPass, Scanner i) throws NoSuchAlgorithmException {
@@ -106,7 +111,7 @@ public class Main {
         ArrayList<String> listOfStrings = new ArrayList<String>();
 
 
-        String s = new String();
+        String s = "";
         char ch;
 
         // Reads file
@@ -117,21 +122,20 @@ public class Main {
             if (ch == '\n' || ch == ' ' || ch == ',') {
 
                 // Storing each string in arraylist
-                listOfStrings.add(s.toString());
+                listOfStrings.add(s);
 
                 // clearing content in string
-                s = new String();
+                s = "";
             } else {
                 s += ch;
             }
         }
-        if (s.length() > 0) {
+        if (!s.isEmpty()) {
 
             // Appends last line of strings
-            listOfStrings.add(s.toString());
+            listOfStrings.add(s);
         }
         // storing the data in arraylist to array (faster read times)
-        String[] array = listOfStrings.toArray(new String[0]);
-        return array;
+        return listOfStrings.toArray(new String[0]);
     }
 }
