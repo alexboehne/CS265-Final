@@ -5,10 +5,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws NoSuchAlgorithmException, IOException {
+        ArrayList<String> argList = new ArrayList<String>(Arrays.asList(args)); // Cast args to arraylist
+
         Scanner input = new Scanner(System.in); // Scanner obj
 
         String compedPass = "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"; // hello in SHA256
@@ -16,8 +19,27 @@ public class Main {
 
         comparePassword(compedPass, input); // Doesn't advance program until correct password
 
-        // Change the text file directory if used on different machine
-        FileReader f = new FileReader("/home/faker/IdeaProjects/jTest/src/text.txt");
+        // Init FileReader
+        FileReader f = null;
+
+        // Change the text file directory if used on different machine (specified on CLI with arg -p <PATH>)
+        if (argList.contains("-p")) { // Checks for -p and sets filepath to following arg
+            f = new FileReader(argList.get((argList.indexOf("-p") + 1)));
+        } else {
+            f = new FileReader("/home/faker/IdeaProjects/jTest/src/text.txt");
+        }
+
+        int min = 0; // min len variable
+        int max = 2147483647; // max len variable
+
+        if (argList.contains("-min")) { // Min parameter
+            min = Integer.parseInt(argList.get((argList.indexOf("-min") + 1)));
+        }
+
+        if (argList.contains("-max")) { // Max parameter
+            max = Integer.parseInt(argList.get((argList.indexOf("-max") + 1)));
+        }
+
 
         long start = System.currentTimeMillis(); //
 
@@ -28,8 +50,12 @@ public class Main {
 
         // Iterates through all words in stored list
         for (String word : stList) {
-            if (word.length() == 1) { // Exclude len 1 words
+            if (word.length() < 2 && min == 0 && max == 0) { // Exclude len 1 words
                 continue;
+            } else if (min != 0 && max != 2147483647) { // Check for min/max args
+                if (word.length() < min || word.length() > max) {
+                    continue;
+                }
             }
             for (Character c : word.toCharArray()) { // Turn word into character array
                 charArray.add(c);
