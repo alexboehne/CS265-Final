@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -15,7 +16,7 @@ public class Main {
         Scanner input = new Scanner(System.in); // Scanner obj
 
         String compedPass = "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"; // hello in SHA256
-        int palindromes = 0; // Pallindrome counter
+        int palindromes = 0; // Palindrome counter
 
         comparePassword(compedPass, input); // Doesn't advance program until correct password
 
@@ -43,13 +44,22 @@ public class Main {
 
         long start = System.currentTimeMillis(); //
 
-        String[] stList = splitFile(f); // Puts text file in string array
+        ArrayList<String> stList = new ArrayList<>(List.of(splitFile(f))); // Puts text file in string array
+
+        if (argList.contains("-w")) { // Individual word parameter
+            stList.clear(); // Clear list
+            for (String arg : argList) { // Iterate through CLI words
+                if (!arg.equals("-w")) {
+                    stList.add(arg);
+                }
+            }
+        }
 
         ArrayList<String> palindromeArray = new ArrayList<>();
 
         // Iterates through all words in stored list
         for (String word : stList) {
-            if (word.length() < 2 && min == 0 && max == 0) { // Exclude len 1 words
+            if (word.length() < 2 && min == 0 && max == 2147483647) { // Exclude len 1 words
                 continue;
             } else if (min != 0 && max != 2147483647) { // Check for min/max args
                 if (word.length() < min || word.length() > max) {
@@ -65,7 +75,7 @@ public class Main {
         long end = System.currentTimeMillis();
         long time = end - start; // Calc run time
 
-        System.out.println(palindromes + " palindromes found in " + time + " ms"); // Print output
+        System.out.println(palindromes + " palindromes found in " + time + " ms, out of " + stList.size() + " words."); // Print output
 
         // List all palindromes found
         System.out.println("Would you like to list the palindromes found? (y/N)");
@@ -83,7 +93,12 @@ public class Main {
         if (word.charAt(0) != word.charAt(word.length() - 1)) { // If first and last characters don't match, not a palindrome
             return false;
         } else { // Recursively check the substring excluding first and last characters
-            return calcPalindrome(word.substring(1, word.length() - 1));
+            if(word.length() <= 2) {
+                return true;
+            }
+            else {
+                return calcPalindrome(word.substring(1, word.length() - 1));
+            }
         }
     }
 
