@@ -30,7 +30,7 @@ public class Main {
             f = new FileReader("/home/faker/IdeaProjects/jTest/src/text.txt");
         }
 
-        int min = 0; // min len variable
+        int min = 1; // min len variable
         int max = 2147483647; // max len variable
 
         if (argList.contains("-min")) { // Min parameter
@@ -61,7 +61,7 @@ public class Main {
         for (String word : stList) {
             if (word.length() < 2 && min == 0 && max == 2147483647) { // Exclude len 1 words
                 continue;
-            } else if (min != 0 && max != 2147483647) { // Check for min/max args
+            } else if (min != 1 || max != 2147483647) { // Check for min/max args
                 if (word.length() < min || word.length() > max) {
                     continue;
                 }
