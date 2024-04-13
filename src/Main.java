@@ -59,7 +59,7 @@ public class Main {
 
         // Iterates through all words in stored list
         for (String word : stList) {
-            if (word.length() < 2 && min == 0 && max == 2147483647) { // Exclude len 1 words
+            if (word.length() < 2 && min == 1 && max == 2147483647) { // Exclude len 1 words
                 continue;
             } else if (min != 1 || max != 2147483647) { // Check for min/max args
                 if (word.length() < min || word.length() > max) {
