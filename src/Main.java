@@ -1,3 +1,7 @@
+// CS 265 Final
+// 4/30/2024
+// Written by Alex Boehne, Kaitlyn Hoffenberger, Owen Ring, and Jenna Wolf
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -20,8 +24,7 @@ public class Main {
 
         comparePassword(compedPass, input); // Doesn't advance program until correct password
 
-        // Init FileReader
-        FileReader f;
+        FileReader f; // Init FileReader
 
         // Change the text file directory if used on different machine (specified on CLI with arg -p <PATH>)
         if (argList.contains("-p")) { // Checks for -p and sets filepath to following arg
@@ -42,7 +45,7 @@ public class Main {
         }
 
 
-        long start = System.currentTimeMillis(); //
+        long start = System.currentTimeMillis(); // Start system timer
 
         ArrayList<String> stList = new ArrayList<>(List.of(splitFile(f))); // Puts text file in string array
 
@@ -55,7 +58,7 @@ public class Main {
             }
         }
 
-        ArrayList<String> palindromeArray = new ArrayList<>();
+        ArrayList<String> palindromeArray = new ArrayList<>(); // Init array of palindromes
 
         // Iterates through all words in stored list
         for (String word : stList) {
@@ -72,7 +75,7 @@ public class Main {
             }
         }
 
-        long end = System.currentTimeMillis();
+        long end = System.currentTimeMillis(); // End system timer
         long time = end - start; // Calc run time
 
         System.out.println(palindromes + " palindromes found in " + time + " ms, out of " + stList.size() + " words."); // Print output
